@@ -1,9 +1,12 @@
-import {Template} from '../index.es6';
-
+import Board from '../src/js/components/Board';
+var observe = require('../src/js/components/Game').observe;
 
 window.onload = () => {
-  var template = ReactDOM.render(
-    <Template />,
-    document.getElementById('wrapper')
-  );
+  var rootEl = document.getElementById('root');
+  observe(function (knightPosition) {
+    ReactDOM.render(
+      <Board knightPosition={knightPosition} />,
+      rootEl
+    );
+  });
 }
