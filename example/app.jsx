@@ -1,9 +1,8 @@
-import {Template} from '../index.es6';
-
+import Area from '../src/js/components/Area';
 
 window.onload = () => {
   var template = ReactDOM.render(
-    <Template />,
+    <Area />,
     document.getElementById('wrapper')
   );
 }
