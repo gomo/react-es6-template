@@ -14,6 +14,7 @@ export default class BaseItem extends Component
       lineHeight: '30px',
       textAlign: 'center',
       userSelect: 'none',
+      WebkitUserSelect: 'none',
       cursor: 'move'
     }
 

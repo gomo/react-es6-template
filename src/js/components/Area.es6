@@ -15,11 +15,12 @@ const style = {
 const areaTarget = {
   drop(props, monitor, component) {
     const item = monitor.getItem();
+    const itemComponent = component.itemComponents[item.id];
     const delta = monitor.getDifferenceFromInitialOffset();
-    const left = Math.round(item.left + delta.x);
-    const top = Math.round(item.top + delta.y);
+    const top = Math.round(itemComponent.state.top + delta.y);
+    const left = Math.round(itemComponent.state.left + delta.x);
 
-    component.moveBox(item.id, top, left);
+    itemComponent.moveTo(top, left);
   }
 };
 
@@ -33,29 +34,16 @@ class Area extends Component
 {
   constructor(props) {
     super(props);
-    this.state = {
-      items: [
-        {id: "1", top:0, left: 0},
-        {id: "2", top:0, left: 100},
-      ]
-    }
-  }
-
-  moveBox(id, top, left){
-    var currentItems = this.state.items;
-    var item = currentItems.find(item => item.id == id);
-    item.top = top;
-    item.left = left;
-    this.setState({items: currentItems});
+    this.itemComponents = {};
   }
 
   render(){
     const { connectDropTarget } = this.props;
     return connectDropTarget(
       <div style={style}>
-        {this.state.items.map(item => {
-          return <DragItem key={item.id} id={item.id} top={item.top} left={item.left} />
-        })}
+        <DragItem id="foo" initialTop="0" initialLeft="0" itemComponents={this.itemComponents} />
+        <DragItem id="bar" initialTop="0" initialLeft="100" itemComponents={this.itemComponents} />
+        <DragItem id="baz" initialTop="200" initialLeft="150" itemComponents={this.itemComponents} />
         <ItemPreview />
       </div>
     )
