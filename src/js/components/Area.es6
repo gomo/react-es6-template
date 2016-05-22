@@ -1,7 +1,8 @@
 import {Component, PropTypes} from 'react';
 import DragItem from './DragItem';
+import ItemPreview from './ItemPreview';
 import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import DndBackend from 'react-dnd-touch-backend';
 import { DropTarget } from 'react-dnd';
 
 const style = {
@@ -18,7 +19,7 @@ const areaTarget = {
     const left = Math.round(item.left + delta.x);
     const top = Math.round(item.top + delta.y);
 
-    component.moveBox(left, top);
+    component.moveBox(item.id, top, left);
   }
 };
 
@@ -32,25 +33,33 @@ class Area extends Component
 {
   constructor(props) {
     super(props);
-
     this.state = {
-      top: 0,
-      left: 0
+      items: [
+        {id: "1", top:0, left: 0},
+        {id: "2", top:0, left: 100},
+      ]
     }
   }
 
-  moveBox(left, top){
-    this.setState({top: top, left: left});
+  moveBox(id, top, left){
+    var currentItems = this.state.items;
+    var item = currentItems.find(item => item.id == id);
+    item.top = top;
+    item.left = left;
+    this.setState({items: currentItems});
   }
 
   render(){
     const { connectDropTarget } = this.props;
     return connectDropTarget(
       <div style={style}>
-        <DragItem top={this.state.top} left={this.state.left} />
+        {this.state.items.map(item => {
+          return <DragItem key={item.id} id={item.id} top={item.top} left={item.left} />
+        })}
+        <ItemPreview />
       </div>
-    );
+    )
   }
 }
 
-export default DragDropContext(HTML5Backend)(DropTarget("DragItem", areaTarget, collect)(Area));
+export default DragDropContext(DndBackend({ enableMouseEvents: true }))(DropTarget("DragItem", areaTarget, collect)(Area));
