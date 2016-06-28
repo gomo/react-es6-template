@@ -2,6 +2,17 @@
 
 react + es6(webpack)のプロジェクトテンプレートです。フォークしてブランチでちょこっとテストするなり、丸っとコピって新規プロジェクトを作るなり、一部コピーして使うなり好きにしてください。
 
+コピーする場合は`.git`を削除してしまうと楽です。
+
+```
+git clone git@github.com:gomo/react-es6-template.git my-react-es6
+cd my-react-es6
+rm -rf .git
+git init
+git add .
+git commit -m "initial commit"
+```
+
 ## インストール
 
 ```
