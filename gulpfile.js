@@ -3,8 +3,9 @@ var gutil = require("gulp-util");
 var webpack = require("webpack");
 var notifier = require('node-notifier');
 var compass = require('gulp-compass');
-var cleanCSS = require('gulp-clean-css');
 var rename = require('gulp-rename');
+var cleanCss = require('gulp-clean-css');
+var uglify = require('gulp-uglify');
 
 
 gulp.task('build-sass', function() {
@@ -24,7 +25,7 @@ gulp.task('build-sass', function() {
     })
     .pipe(gulp.dest('dist/css'))
     .pipe(rename({ suffix: '.min' }))
-    .pipe(cleanCSS())
+    .pipe(cleanCss())
     .on('error', function(error){
       notifier.notify({
         title: error.plugin,
@@ -53,6 +54,14 @@ gulp.task('build-example', function() {
 
     //console log
     gutil.log("[webpack]", stats.toString({}));
+
+    //uglify
+    gulp.src(config.output.path + '/' + config.output.filename)
+      .pipe(rename({ suffix: '.min' }))
+      .pipe(uglify({
+        preserveComments: 'license'
+      }))
+      .pipe(gulp.dest(config.output.path))
   });
 });
 

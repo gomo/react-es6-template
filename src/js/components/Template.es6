@@ -13,6 +13,6 @@ export default class Template extends Component
   }
 }
 
-Event.propTypes = {
+Template.propTypes = {
 
 }
