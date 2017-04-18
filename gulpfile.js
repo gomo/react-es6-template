@@ -5,8 +5,6 @@ var notifier = require('node-notifier');
 var compass = require('gulp-compass');
 var rename = require('gulp-rename');
 var cleanCss = require('gulp-clean-css');
-var uglify = require('gulp-uglify');
-
 
 gulp.task('build-sass', function() {
   return gulp.src(['src/sass/*.scss', 'src/sass/**/*.scss'])
@@ -41,8 +39,8 @@ gulp.task('watch-sass', function() {
   gulp.watch(['src/sass/*.scss', 'src/sass/**/*.scss']);
 });
 
-gulp.task('build-example', function() {
-  var config = require('./example/webpack.config.js');
+gulp.task('build-docs', function() {
+  var config = require('./docs-src/webpack.config.js');
   webpack(config, function(err, stats) {
     //notifier
     if (stats.compilation.errors.length) {
@@ -54,16 +52,10 @@ gulp.task('build-example', function() {
 
     //console log
     gutil.log("[webpack]", stats.toString({}));
-
-    //uglify
-    gulp.src(config.output.path + '/' + config.output.filename)
-      .pipe(rename({ suffix: '.min' }))
-      .pipe(uglify({
-        preserveComments: 'license'
-      }))
-      .pipe(gulp.dest(config.output.path))
   });
+
+  gulp.src('dist/css/**/*.css').pipe(gulp.dest('docs/css'));
 });
 
 
-gulp.task('default', ['build-sass', 'build-example'])
+gulp.task('default', ['build-sass', 'build-docs'])

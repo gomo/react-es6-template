@@ -1,4 +1,4 @@
-import {Template} from '../index.es6';
+import {Template} from '../index';
 
 
 window.onload = () => {
